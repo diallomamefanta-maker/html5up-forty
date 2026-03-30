@@ -66,4 +66,4 @@ jobs:
         continue-on-error: true
 
       - name: Run new container
-  run: docker run -d -p 80:80 --name ci-app ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+        run: docker run -d -p 80:80 --name ci-app ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
