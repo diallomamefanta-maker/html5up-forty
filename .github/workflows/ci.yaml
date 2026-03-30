@@ -55,7 +55,7 @@ jobs:
     steps:
       - name: Pull latest image
         run: |
-          docker pull %DOCKER_REGISTRY%/%image_name%:%IMAGE_TAG%
+          docker pull ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
       - name: Stop existing container
         run: docker stop ci-app
