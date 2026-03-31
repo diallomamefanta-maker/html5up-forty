@@ -50,7 +50,7 @@ jobs:
   # ===============================
   deploy:
     needs: ci
-    runs-on: self-hosted
+    runs-on: ummy-1
 
     steps:
       - name: Pull latest image
