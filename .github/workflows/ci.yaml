@@ -49,8 +49,24 @@ jobs:
   # JOB 2 - SCAN SECURITE : TRIVY
   # ===============================
   scan-trivy:
-          - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.20.0
+    needs: ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | \
+          docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Pull image to scan
+        run: |
+          docker pull ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           format: sarif
@@ -62,7 +78,7 @@ jobs:
       - name: Upload résultats Trivy
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: trivy-results.sarif
+          sarif_file: trivy-results.sarif    
 
   # ===============================
   # JOB 3 - CD : DEPLOY
